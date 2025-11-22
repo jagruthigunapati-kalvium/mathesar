@@ -10,7 +10,7 @@ function getAlias() {
   const alias = [];
   const { paths } = data.compilerOptions;
   Object.keys(paths).forEach((key) => {
-    const find = (__dirname, key.replace('/*', ''));
+    const find = key.replace('/*', '');
     const replacement = path.resolve(paths[key][0].replace('/*', ''));
     alias.push({
       find,
@@ -20,7 +20,8 @@ function getAlias() {
   return alias;
 }
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === 'serve' ? '/' : '/static/',
   resolve: {
     alias: getAlias(),
   },
@@ -49,7 +50,6 @@ export default defineConfig({
     outDir: '../mathesar/static/mathesar/',
     emptyOutDir: true,
   },
-  base: '/static/',
   test: {
     environment: 'jsdom',
     globals: true,
@@ -59,8 +59,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        api: 'modern', // Or 'modern'
+        api: 'modern',
       },
     },
   },
-});
+}));
