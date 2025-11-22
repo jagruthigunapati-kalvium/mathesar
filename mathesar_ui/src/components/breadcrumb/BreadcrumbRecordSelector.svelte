@@ -7,12 +7,18 @@
   const recordSelector = recordSelectorContext.get();
   export let table: Table;
 
-  function handleClick() {
+  function handleClick(event: MouseEvent) {
+    if (event.shiftKey) {
+      event.preventDefault(); // Prevent default behavior
+      return; // Skip opening the record selector
+    }
+
     recordSelector?.navigateToRecordPage({ tableOid: table.oid });
   }
 </script>
 
-<Button on:click={handleClick} appearance="ghost" class="padding-zero">
+<Button on:click={(event) => handleClick(event)} appearance="ghost" class="padding-zero">
+
   <span class="trigger">
     <span class="icon"><Icon {...iconSearch} /></span>
     <Icon {...iconExpandRight} class="expand-right-icon" />
